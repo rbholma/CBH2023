@@ -1,0 +1,62 @@
+import url from 'url';
+import { createRunner } from '@puppeteer/replay';
+
+export async function run(extension) {
+    const runner = await createRunner(extension);
+
+    await runner.runBeforeAllSteps();
+
+    await runner.runStep({
+        type: 'setViewport',
+        width: 972,
+        height: 791,
+        deviceScaleFactor: 1,
+        isMobile: false,
+        hasTouch: false,
+        isLandscape: false
+    });
+    await runner.runStep({
+        type: 'navigate',
+        assertedEvents: [
+            {
+                type: 'navigation',
+                url: 'https://news.scorebooklive.com/arkansas/2023/07/24/vote-now-who-is-the-best-wide-receiver-in-arkansas-high-school-football?fbclid=IwAR1OufX69WkACgby6l_xBvjcUcP5i7M9nZo6AxjspaRXMOTbC7WACGnAS0s',
+                title: 'Vote now: Who is the best wide receiver in Arkansas high school football? - Scorebook Live'
+            }
+        ],
+        timeout: 15000,
+        url: 'https://news.scorebooklive.com/arkansas/2023/07/24/vote-now-who-is-the-best-wide-receiver-in-arkansas-high-school-football?fbclid=IwAR1OufX69WkACgby6l_xBvjcUcP5i7M9nZo6AxjspaRXMOTbC7WACGnAS0s'
+    });
+    await runner.runStep({
+        type: 'click',
+        timeout: 10000,
+        target: 'main',
+        selectors: [
+            'aria/Carter Holman, Shiloh Christian',
+            '#PDI_answer56614641',
+            'xpath///*[@id="PDI_answer56614641"]',
+            'pierce/#PDI_answer56614641'
+        ],
+        offsetX: 8,
+        offsetY: 23.59375
+    });
+    await runner.runStep({
+        type: 'click',
+        timeout: 10000,
+        target: 'main',
+        selectors: [
+            'aria/Vote',
+            '#pd-vote-button12550566',
+            'xpath///*[@id="pd-vote-button12550566"]',
+            'pierce/#pd-vote-button12550566'
+        ],
+        offsetX: 55.046875,
+        offsetY: 29.59375
+    });
+
+    await runner.runAfterAllSteps();
+}
+
+if (process && import.meta.url === url.pathToFileURL(process.argv[1]).href) {
+    run()
+}
